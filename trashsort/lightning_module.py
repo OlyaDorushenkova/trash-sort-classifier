@@ -45,26 +45,29 @@ class TrashClassifier(pl.LightningModule):
         loss = self.criterion(logits, y)
 
         preds = torch.argmax(logits, dim=1)
-
         acc = self.train_acc(preds, y)
 
         self.log(
             "train_loss",
             loss,
-            prog_bar=True,
             on_step=False,
             on_epoch=True,
+            prog_bar=True,
+            logger=True,
+            batch_size=x.size(0),
         )
 
         self.log(
             "train_acc",
             acc,
-            prog_bar=True,
             on_step=False,
             on_epoch=True,
+            prog_bar=True,
+            logger=True,
+            batch_size=x.size(0),
         )
 
-        return loss
+    return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
@@ -73,24 +76,30 @@ class TrashClassifier(pl.LightningModule):
         loss = self.criterion(logits, y)
 
         preds = torch.argmax(logits, dim=1)
-
         acc = self.val_acc(preds, y)
 
         self.log(
             "val_loss",
             loss,
-            prog_bar=True,
+            on_step=False,
             on_epoch=True,
+            prog_bar=True,
+            logger=True,
+            batch_size=x.size(0),
         )
 
         self.log(
             "val_acc",
             acc,
-            prog_bar=True,
+            on_step=False,
             on_epoch=True,
+            prog_bar=True,
+            logger=True,
+            batch_size=x.size(0),
         )
 
         return loss
+
 
     def test_step(self, batch, batch_idx):
         x, y = batch

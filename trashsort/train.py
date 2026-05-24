@@ -1,5 +1,6 @@
 import os
 import subprocess
+from pytorch_lightning.loggers import MLFlowLogger
 
 import hydra
 import mlflow
@@ -8,9 +9,9 @@ import pytorch_lightning as pl
 from omegaconf import DictConfig, OmegaConf
 from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
 
-from src.datamodule import TrashDataModule
-from src.lightning_module import TrashClassifier
-from src.model import create_model
+from trashsort.datamodule import TrashDataModule
+from trashsort.lightning_module import TrashClassifier
+from trashsort.model import create_model
 
 
 def get_git_commit():
@@ -81,11 +82,16 @@ def main(cfg: DictConfig):
 
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
 
+    mlflow_logger = MLFlowLogger(
+        experiment_name=cfg.mlflow.experiment_name,
+        tracking_uri=cfg.mlflow.tracking_uri,
+    )
     trainer = pl.Trainer(
         max_epochs=cfg.train.epochs,
         accelerator=accelerator,
         devices=1,
-        log_every_n_steps=10,
+        logger=mlflow_logger,
+        log_every_n_steps=1,
         callbacks=[
             checkpoint_callback,
             lr_monitor,

@@ -3,9 +3,9 @@ from PIL import Image
 import torch
 import io
 
-from src.model import create_model
-from src.lightning_module import TrashClassifier
-from src.datamodule import TrashDataModule
+from trashsort.model import create_model
+from trashsort.lightning_module import TrashClassifier
+from trashsort.datamodule import TrashDataModule
 
 app = FastAPI(title="TrashSort API")
 

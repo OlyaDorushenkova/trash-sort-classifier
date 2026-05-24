@@ -35,3 +35,6 @@ data/raw/
 
 # logs
 *.log
+
+# MLflow artifacts
+mlartifacts/

@@ -1,0 +1,23 @@
+train:
+  epochs: 10
+  batch_size: 32
+  lr: 0.001
+  seed: 42
+  num_workers: 0
+  accelerator: auto
+  checkpoint_dir: models/checkpoints
+  log_every_n_steps: 10
+data:
+  data_dir: data/raw
+  image_size: 224
+  train_split: 0.7
+  val_split: 0.15
+  test_split: 0.15
+model: {}
+mlflow:
+  tracking_uri: http://127.0.0.1:8080
+  experiment_name: trashsort
+inference:
+  checkpoint_path: models/checkpoints/best.ckpt
+  image_size: 224
+  device: auto

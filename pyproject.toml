@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "trashsort"
 version = "0.1.0"
-description = "MLOps Trash Classification"
+description = "Trash Classification"
 authors = ["Olya"]
 package-mode = false
 
