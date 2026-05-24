@@ -425,7 +425,7 @@ dvc pull
 
 poetry run mlflow ui --port 8080
 
-poetry run python -m src.train
+poetry run python -m trashsort.train
 
-poetry run python -m src.predict image_path=test.jpg
+poetry run python -m trashsort.predict image_path=test.jpg
 ```
