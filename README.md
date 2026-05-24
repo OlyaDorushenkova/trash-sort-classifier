@@ -9,8 +9,7 @@
 ---
 
 ## Описание проекта
-
-Сортировка мусора — одна из задач, где автоматическая классификация может использоваться для ускорения переработки отходов. В рамках проекта обучается модель компьютерного зрения, которая по изображению определяет категорию мусора.
+В рамках проекта обучается модель компьютерного зрения, которая по изображению определяет категорию мусора.
 
 Задача сформулирована как **multiclass image classification**.
 
@@ -86,7 +85,6 @@ raw/
 Причины выбора:
 
 - простая и устойчивая архитектура
-- быстро обучается на Apple Silicon (MPS)
 - подходит для небольшого датасета
 - легко воспроизводится
 
@@ -142,7 +140,7 @@ trashsort/
 │   ├── mlflow/
 │   └── inference/
 │
-├── src/
+├── trashsort/
 │   ├── datamodule.py
 │   ├── lightning_module.py
 │   ├── model.py
@@ -271,7 +269,7 @@ http://127.0.0.1:8080
 Базовый запуск:
 
 ```bash
-poetry run python -m src.train
+poetry run python -m trashsort.train
 ```
 
 ---
@@ -281,13 +279,13 @@ poetry run python -m src.train
 Например:
 
 ```bash
-poetry run python -m src.train train.epochs=20
+poetry run python -m trashsort.train train.epochs=20
 ```
 
 или:
 
 ```bash
-poetry run python -m src.train train.batch_size=64
+poetry run python -m trashsort.train train.batch_size=64
 ```
 
 ---
@@ -321,7 +319,7 @@ mlruns/
 После обучения:
 
 ```bash
-poetry run python -m src.plots
+poetry run python -m trashsort.plots
 ```
 
 Создаются графики:
@@ -332,25 +330,8 @@ poetry run python -m src.plots
 
 ---
 
-# Inference
 
-Для предсказания по изображению:
-
-```bash
-poetry run python -m src.predict image_path=test.jpg
-```
-
-Пример вывода:
-
-```txt
-Prediction:
-Class ID: 2
-Class Name: glass
-```
-
----
-
-# API
+# Inference (через API или UI)
 
 Для запуска сервиса:
 
@@ -408,24 +389,5 @@ dvc push
 poetry run pre-commit run -a
 ```
 
-Запуск тестов:
-
-```bash
-poetry run pytest
-```
-
 ---
 
-## Пример полного запуска проекта
-
-```bash
-poetry install
-
-dvc pull
-
-poetry run mlflow ui --port 8080
-
-poetry run python -m src.train
-
-poetry run python -m src.predict image_path=test.jpg
-```
