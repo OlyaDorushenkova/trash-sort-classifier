@@ -106,6 +106,10 @@ Validation Accuracy > 75%
 
 Так как датасет небольшой, целью проекта является стабильное обучение и воспроизводимость пайплайна, а не достижение SOTA.
 
+Итоговые метрики:
+<img width="348" height="74" alt="image" src="https://github.com/user-attachments/assets/5cbe13ba-38bb-4de6-bc83-e872e88c844c" />
+
+
 ---
 
 ## Технологии
