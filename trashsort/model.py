@@ -1,5 +1,5 @@
 import torch.nn as nn
-from torchvision.models import resnet18, ResNet18_Weights
+from torchvision.models import ResNet18_Weights, resnet18
 
 
 def create_model(num_classes: int) -> nn.Module:

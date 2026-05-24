@@ -1,11 +1,12 @@
-from fastapi import FastAPI, UploadFile, File
-from PIL import Image
-import torch
 import io
 
-from trashsort.model import create_model
-from trashsort.lightning_module import TrashClassifier
+import torch
+from fastapi import FastAPI, File, UploadFile
+from PIL import Image
+
 from trashsort.datamodule import TrashDataModule
+from trashsort.lightning_module import TrashClassifier
+from trashsort.model import create_model
 
 app = FastAPI(title="TrashSort API")
 
@@ -28,9 +29,7 @@ lit_model.eval()
 
 def preprocess(image: Image.Image):
     image = image.resize((224, 224))
-    x = torch.tensor(
-        torch.ByteTensor(torch.ByteStorage.from_buffer(image.tobytes()))
-    )
+    x = torch.tensor(torch.ByteTensor(torch.ByteStorage.from_buffer(image.tobytes())))
     x = x.float() / 255.0
     x = x.view(1, 3, 224, 224)
     return x.to(DEVICE)

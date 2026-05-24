@@ -21,6 +21,7 @@ pillow = "^10.0.0"
 matplotlib = "^3.8.0"
 fastapi = "^0.115.0"
 uvicorn = "^0.30.0"
+python-multipart = "^0.0.29"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"

@@ -1,7 +1,7 @@
+import pytorch_lightning as pl
 import torch
 import torch.nn as nn
 import torchmetrics
-import pytorch_lightning as pl
 
 
 class TrashClassifier(pl.LightningModule):
@@ -67,7 +67,7 @@ class TrashClassifier(pl.LightningModule):
             batch_size=x.size(0),
         )
 
-    return loss
+        return loss
 
     def validation_step(self, batch, batch_idx):
         x, y = batch
@@ -99,7 +99,6 @@ class TrashClassifier(pl.LightningModule):
         )
 
         return loss
-
 
     def test_step(self, batch, batch_idx):
         x, y = batch

@@ -1,13 +1,12 @@
-import os
 import subprocess
-from pytorch_lightning.loggers import MLFlowLogger
 
 import hydra
 import mlflow
-import torch
 import pytorch_lightning as pl
+import torch
 from omegaconf import DictConfig, OmegaConf
-from pytorch_lightning.callbacks import ModelCheckpoint, LearningRateMonitor
+from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
+from pytorch_lightning.loggers import MLFlowLogger
 
 from trashsort.datamodule import TrashDataModule
 from trashsort.lightning_module import TrashClassifier
@@ -17,9 +16,7 @@ from trashsort.model import create_model
 def get_git_commit():
     try:
         return (
-            subprocess.check_output(
-                ["git", "rev-parse", "HEAD"]
-            )
+            subprocess.check_output(["git", "rev-parse", "HEAD"])
             .decode("utf-8")
             .strip()
         )
@@ -37,7 +34,6 @@ def get_device(accelerator_cfg: str):
 
 @hydra.main(config_path="../configs", config_name="config", version_base=None)
 def main(cfg: DictConfig):
-
     print(OmegaConf.to_yaml(cfg))
 
     # reproducibility
@@ -62,9 +58,7 @@ def main(cfg: DictConfig):
 
     datamodule.setup()
 
-    model = create_model(
-        num_classes=datamodule.num_classes
-    )
+    model = create_model(num_classes=datamodule.num_classes)
 
     lit_model = TrashClassifier(
         model=model,
@@ -99,7 +93,6 @@ def main(cfg: DictConfig):
     )
 
     with mlflow.start_run():
-
         mlflow.log_params(
             {
                 "epochs": cfg.train.epochs,
@@ -117,9 +110,7 @@ def main(cfg: DictConfig):
         trainer.test(lit_model, datamodule)
 
         # log best model
-        mlflow.log_artifact(
-            checkpoint_callback.best_model_path
-        )
+        mlflow.log_artifact(checkpoint_callback.best_model_path)
 
     print("Training completed.")
 

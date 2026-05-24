@@ -4,39 +4,24 @@ import matplotlib.pyplot as plt
 import mlflow
 from mlflow.tracking import MlflowClient
 
-
 MLFLOW_URI = "http://127.0.0.1:8080"
 EXPERIMENT_NAME = "trashsort"
 
 
 def create_plots():
-    mlflow.set_tracking_uri(
-        MLFLOW_URI
-    )
+    mlflow.set_tracking_uri(MLFLOW_URI)
 
-    experiment = (
-        mlflow.get_experiment_by_name(
-            EXPERIMENT_NAME
-        )
-    )
+    experiment = mlflow.get_experiment_by_name(EXPERIMENT_NAME)
 
     if experiment is None:
-        raise ValueError(
-            "Experiment not found"
-        )
+        raise ValueError("Experiment not found")
 
     runs = mlflow.search_runs(
-        experiment_ids=[
-            experiment.experiment_id
-        ],
-        order_by=[
-            "start_time DESC"
-        ]
+        experiment_ids=[experiment.experiment_id], order_by=["start_time DESC"]
     )
 
     latest_run = runs.iloc[0]
     run_id = latest_run["run_id"]
-    
 
     # client = MlflowClient()
     # run = client.get_run(run_id)
@@ -45,29 +30,15 @@ def create_plots():
     #     print(k)
     client = MlflowClient()
 
-    train_loss = client.get_metric_history(
-        run_id,
-        "train_loss"
-    )
+    train_loss = client.get_metric_history(run_id, "train_loss")
 
-    val_loss = client.get_metric_history(
-        run_id,
-        "val_loss"
-    )
+    val_loss = client.get_metric_history(run_id, "val_loss")
 
-    train_acc = client.get_metric_history(
-        run_id,
-        "train_acc"
-    )
+    train_acc = client.get_metric_history(run_id, "train_acc")
 
-    val_acc = client.get_metric_history(
-        run_id,
-        "val_acc"
-    )
+    val_acc = client.get_metric_history(run_id, "val_acc")
 
-    Path("plots").mkdir(
-        exist_ok=True
-    )
+    Path("plots").mkdir(exist_ok=True)
 
     # ---- LOSS CURVE ----
     plt.figure(figsize=(8, 5))
@@ -94,9 +65,7 @@ def create_plots():
     plt.legend()
     plt.tight_layout()
 
-    plt.savefig(
-        "plots/loss_curve.png"
-    )
+    plt.savefig("plots/loss_curve.png")
     plt.close()
 
     # ---- ACCURACY CURVE ----
@@ -124,9 +93,7 @@ def create_plots():
     plt.legend()
     plt.tight_layout()
 
-    plt.savefig(
-        "plots/accuracy_curve.png"
-    )
+    plt.savefig("plots/accuracy_curve.png")
     plt.close()
 
     # ---- FINAL METRICS ----
@@ -147,9 +114,7 @@ def create_plots():
     plt.title("Final Metrics")
     plt.tight_layout()
 
-    plt.savefig(
-        "plots/metrics_summary.png"
-    )
+    plt.savefig("plots/metrics_summary.png")
     plt.close()
 
     print("Plots saved in /plots")

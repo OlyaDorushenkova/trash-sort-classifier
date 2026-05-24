@@ -1,10 +1,9 @@
 from pathlib import Path
 
-import torch
+import pytorch_lightning as pl
+from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader, Subset
 from torchvision import datasets, transforms
-from sklearn.model_selection import train_test_split
-import pytorch_lightning as pl
 
 
 class TrashDataModule(pl.LightningDataModule):
@@ -39,37 +38,37 @@ class TrashDataModule(pl.LightningDataModule):
         data_path = Path(self.data_dir)
 
         if not data_path.exists():
-            raise FileNotFoundError(
-                f"Dataset not found: {data_path}"
-            )
+            raise FileNotFoundError(f"Dataset not found: {data_path}")
 
-        self.train_transform = transforms.Compose([
-            transforms.Resize((self.image_size, self.image_size)),
-            transforms.RandomHorizontalFlip(),
-            transforms.RandomRotation(10),
-            transforms.ColorJitter(
-                brightness=0.1,
-                contrast=0.1,
-            ),
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225],
-            ),
-        ])
-
-        self.eval_transform = transforms.Compose([
-            transforms.Resize((self.image_size, self.image_size)),
-            transforms.ToTensor(),
-            transforms.Normalize(
-                mean=[0.485, 0.456, 0.406],
-                std=[0.229, 0.224, 0.225],
-            ),
-        ])
-
-        full_dataset = datasets.ImageFolder(
-            root=self.data_dir
+        self.train_transform = transforms.Compose(
+            [
+                transforms.Resize((self.image_size, self.image_size)),
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomRotation(10),
+                transforms.ColorJitter(
+                    brightness=0.1,
+                    contrast=0.1,
+                ),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406],
+                    std=[0.229, 0.224, 0.225],
+                ),
+            ]
         )
+
+        self.eval_transform = transforms.Compose(
+            [
+                transforms.Resize((self.image_size, self.image_size)),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    mean=[0.485, 0.456, 0.406],
+                    std=[0.229, 0.224, 0.225],
+                ),
+            ]
+        )
+
+        full_dataset = datasets.ImageFolder(root=self.data_dir)
 
         indices = list(range(len(full_dataset)))
 
@@ -80,10 +79,7 @@ class TrashDataModule(pl.LightningDataModule):
             stratify=full_dataset.targets,
         )
 
-        temp_targets = [
-            full_dataset.targets[i]
-            for i in temp_idx
-        ]
+        temp_targets = [full_dataset.targets[i] for i in temp_idx]
 
         val_idx, test_idx = train_test_split(
             temp_idx,
