@@ -1,0 +1,7 @@
+data_dir: data/raw
+
+image_size: 224
+
+train_split: 0.7
+val_split: 0.15
+test_split: 0.15

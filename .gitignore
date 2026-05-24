@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# macOS
+.DS_Store
+
+# Virtual env
+.venv/
+venv/
+
+# MLflow
+mlruns/
+
+# Hydra
+outputs/
+multirun/
+
+# Models
+models/checkpoints/
+
+# DVC cached data
+data/raw/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
+
+# pytest
+.pytest_cache/
+
+# logs
+*.log

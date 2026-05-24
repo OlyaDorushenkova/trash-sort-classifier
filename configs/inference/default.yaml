@@ -1,0 +1,3 @@
+checkpoint_path: models/checkpoints/best.ckpt
+image_size: 224
+device: auto   # auto / cpu / mps

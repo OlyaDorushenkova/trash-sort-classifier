@@ -1,0 +1,11 @@
+stages:
+  train:
+    cmd: python -m src.train
+    deps:
+      - src/train.py
+      - src/lightning_module.py
+      - src/datamodule.py
+      - src/model.py
+      - data/raw
+    outs:
+      - models/checkpoints

@@ -1,0 +1,10 @@
+defaults:
+  - train: default
+  - data: trashnet
+  - model: resnet18
+  - mlflow: default
+  - inference: default
+
+hydra:
+  run:
+    dir: .
